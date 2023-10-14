@@ -8,7 +8,6 @@ const FileUpload = ({
                         response,
                         selectedLanguage,
                         onLanguageChange,
-                        error,
                     }) => {
     let content = null;
 
@@ -24,12 +23,6 @@ const FileUpload = ({
             <div className="mt-4">
                 <h2 className="text-2xl font-semibold mb-2">Wynik:</h2>
                 <p className="text-gray-700 text-xl">{response.content}</p>
-            </div>
-        );
-    } else {
-        content = (
-            <div className="mt-4">
-                <p className="text-gray-700 text-xl">{error}</p>
             </div>
         );
     }
