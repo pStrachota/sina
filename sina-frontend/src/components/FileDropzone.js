@@ -32,7 +32,7 @@ const FileDropzone = ({ onFileChange, loading }) => {
                 <input
                     id="dropzone-file"
                     type="file"
-                    accept=".pdf, .docx, .txt"
+                    accept=".pdf"
                     className="hidden"
                     onChange={onFileChange}
                     disabled={loading}

@@ -10,7 +10,7 @@ const PDFViewer = ({ viewPdf }) => {
             <div className="mt-4">
                 <h2 className="text-xl font-semibold mb-2">Podgląd PDF:</h2>
                 {viewPdf ? (
-                    <Worker workerUrl="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js">
+                    <Worker workerUrl="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js">
                         <Viewer defaultScale={1} fileUrl={viewPdf} />
                     </Worker>
                 ) : (
