@@ -18,7 +18,7 @@ function App() {
         const selectedFile = event.target.files[0];
         setFile(selectedFile);
         if (selectedFile) {
-            if (selectedFile.size <= 2 * 1024 * 1024 && selectedFile.type === 'application/pdf') {
+            if (selectedFile.size <= 2 * 1024 * 1024) {
                 let reader = new FileReader();
                 reader.readAsDataURL(selectedFile);
                 reader.onloadend = () => {
@@ -100,16 +100,7 @@ function App() {
                 <PDFViewer viewPdf={viewPdf}/>
                 <ToastContainer
                     position="top-center"
-                    autoClose={2000}
-                    hideProgressBar={false}
-                    newestOnTop={false}
-                    closeOnClick
-                    rtl={false}
-                    pauseOnFocusLoss
-                    draggable
-                    pauseOnHover
-                    theme="light"
-                />
+                    autoClose={2000}/>
             </div>
         </>
     );
