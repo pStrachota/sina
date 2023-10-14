@@ -3,6 +3,7 @@ import { Viewer, Worker } from "@react-pdf-viewer/core";
 import '@react-pdf-viewer/core/lib/styles/index.css';
 import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 
+
 const PDFViewer = ({ viewPdf }) => {
     return (
         <div className="p-6 bg-white rounded-lg shadow-md w-1/2">

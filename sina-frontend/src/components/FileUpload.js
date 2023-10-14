@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import {toast, ToastContainer} from "react-toastify";
 
 const FileUpload = ({
                         onFileChange,
@@ -13,6 +14,24 @@ const FileUpload = ({
                     }) => {
     let content = null;
 
+    const handleCopyToClipboard = () => {
+        if (response) {
+            navigator.clipboard.writeText(response.content)
+                .then(() => {
+                   toast("Skopiowano do schowka", {
+                          type: "success",
+
+                   })
+                })
+                .catch((error) => {
+                    console.error("Error copying to clipboard", error);
+                    toast("Wystąpił błąd podczas kopiowania do schowka", {
+                        type: "error",
+                    })
+                });
+        }
+    };
+
     if (loading) {
         content = (
             <div className="mt-4 flex items-center">
@@ -25,6 +44,12 @@ const FileUpload = ({
             <div className="mt-4">
                 <h2 className="text-2xl font-semibold mb-2">Wynik:</h2>
                 <p className="text-gray-700 text-xl">{response.content}</p>
+                <button
+                    onClick={handleCopyToClipboard}
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md mt-2"
+                >
+                    Copy to Clipboard
+                </button>
             </div>
         );
     }
@@ -103,6 +128,18 @@ const FileUpload = ({
                 </button>
             </div>
             {content}
+            <ToastContainer
+                position="top-center"
+                autoClose={2000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            />
         </div>
     );
 };
