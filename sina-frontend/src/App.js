@@ -10,6 +10,7 @@ function App() {
     const [response, setResponse] = useState("");
     const [loading, setLoading] = useState(false);
     const [viewPdf, setViewPdf] = useState(null);
+    const [sliderValue, setSliderValue] = useState(5);
     const [selectedLanguage, setSelectedLanguage] = useState("polish");
 
     const onFileChange = useCallback((event) => {
@@ -38,6 +39,7 @@ function App() {
             const formData = new FormData();
             formData.append("file", file);
             formData.append("language", selectedLanguage);
+            formData.append("contextLength", sliderValue);
 
             try {
                 setLoading(true);
@@ -76,6 +78,10 @@ function App() {
         setSelectedLanguage(event.target.value);
     };
 
+    const handleSliderChange = (event) => {
+        setSliderValue(event.target.value);
+    }
+
     return (
         <>
             <div className="bg-white p-4 text-black shadow-xl flex items-center">
@@ -88,6 +94,8 @@ function App() {
                             response={response}
                             selectedLanguage={selectedLanguage}
                             onLanguageChange={handleLanguageChange}
+                            sliderValue={sliderValue}
+                            onSliderChange={handleSliderChange}
                 />
                 <PDFViewer viewPdf={viewPdf}/>
                 <ToastContainer

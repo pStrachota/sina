@@ -34,12 +34,13 @@ public class ContentExtractorControl {
     private static final String PROMPT_TEMPLATE = """
             I'm developing an application for summarizing PDF files.
             Write me a summary of what is in this PDF file.
+            Limit your response to %s00 characters.
             Write in language: %s
             Here is the content of the PDF file that needs to be summarized:       \s
             %s
             """;
 
-    public String extractContent(final MultipartFile multipartFile, final String language) {
+    public String extractContent(final MultipartFile multipartFile, final String language, final String contextLength) {
         String text;
 
         try (final PDDocument document = Loader.loadPDF(multipartFile.getBytes())) {
@@ -48,7 +49,8 @@ public class ContentExtractorControl {
             if (text == null || text.isEmpty()) {
                 throw new CannotReadTextFromPdfException("Cannot read text from PDF file");
             } else {
-                String prompt = String.format(PROMPT_TEMPLATE, language, text);
+                String prompt = String.format(PROMPT_TEMPLATE, contextLength, language, text);
+                log.info("Prompt: {}", prompt);
                 ChatRequest request = new ChatRequest(model, prompt);
 
                 ChatResponse response = restTemplate.postForObject(apiUrl, request, ChatResponse.class);

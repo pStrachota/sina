@@ -8,6 +8,8 @@ const FileUpload = ({
                         response,
                         selectedLanguage,
                         onLanguageChange,
+    sliderValue,
+    onSliderChange,
                     }) => {
     let content = null;
 
@@ -75,6 +77,20 @@ const FileUpload = ({
                         <option value="korean">Koreański</option>
                         <option value="german">Niemiecki</option>
                     </select>
+                </div>
+                <div >
+                    <label htmlFor="slider" className="text-gray-700 block">Wybierz szczegółowość:</label>
+                    <input
+                        type="range"
+                        id="slider"
+                        name="slider"
+                        min="1"
+                        max="10"
+                        value={sliderValue}
+                       onChange={onSliderChange}
+                        disabled={loading}
+                    />
+                    <p className="text-gray-700">Wartość: {sliderValue}</p>
                 </div>
                 <button
                     onClick={handleUpload}
