@@ -1,9 +1,7 @@
 package pl.lodz.p.sina.sinabackend.service;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.pdfbox.Loader;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.text.PDFTextStripper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,10 +10,9 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import pl.lodz.p.sina.sinabackend.dto.ChatRequest;
 import pl.lodz.p.sina.sinabackend.dto.ChatResponse;
-import pl.lodz.p.sina.sinabackend.exceptions.CannotReadTextFromPdfException;
+import pl.lodz.p.sina.sinabackend.exceptions.CannotReadTextException;
 import pl.lodz.p.sina.sinabackend.exceptions.GeneralException;
 
-import java.io.IOException;
 
 @Service
 @Slf4j
@@ -25,6 +22,9 @@ public class ContentExtractorControl {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Autowired
+    private ExtractorFactory extractorFactory;
+
     @Value("${openai.model}")
     private String model;
 
@@ -32,36 +32,36 @@ public class ContentExtractorControl {
     private String apiUrl;
 
     private static final String PROMPT_TEMPLATE = """
-            I'm developing an application for summarizing PDF files.
-            Write me a summary of what is in this PDF file.
+            I'm developing an application for summarizing various type of files.
+            Write me a summary of what is in this file.
             Limit your response to %s00 characters.
             Write in language: %s
-            Here is the content of the PDF file that needs to be summarized:       \s
+            Here is the content of the file that needs to be summarized:       \s
             %s
             """;
 
-    public String extractContent(final MultipartFile multipartFile, final String language, final String contextLength) {
+    public String extractContent(final MultipartFile multipartFile, final String language, final String contextLength, final String fileExtension) {
         String text;
 
-        try (final PDDocument document = Loader.loadPDF(multipartFile.getBytes())) {
-            final PDFTextStripper pdfStripper = new PDFTextStripper();
-            text = pdfStripper.getText(document);
-            if (text == null || text.isEmpty()) {
-                throw new CannotReadTextFromPdfException("Cannot read text from PDF file");
-            } else {
-                String prompt = String.format(PROMPT_TEMPLATE, contextLength, language, text);
-                log.info("Prompt: {}", prompt);
-                ChatRequest request = new ChatRequest(model, prompt);
-
-                ChatResponse response = restTemplate.postForObject(apiUrl, request, ChatResponse.class);
-                if (response != null) {
-                    text = response.getChoices().get(0).getMessage().getContent();
-                }
-            }
-
-        } catch (IOException e) {
-           throw new GeneralException("Unknown exception while reading PDF file");
+        switch (fileExtension) {
+            case "txt" -> text = extractorFactory.executeExtractor(ExtractorType.TXT, multipartFile);
+            case "pdf" -> text = extractorFactory.executeExtractor(ExtractorType.PDF, multipartFile);
+            case "docx" -> text = extractorFactory.executeExtractor(ExtractorType.DOCX, multipartFile);
+            default -> throw new GeneralException("Unknown file extension");
         }
+
+        if (text == null || text.isEmpty()) {
+            throw new CannotReadTextException("Cannot read text from PDF file");
+        } else {
+            String prompt = String.format(PROMPT_TEMPLATE, contextLength, language, text);
+            ChatRequest request = new ChatRequest(model, prompt);
+
+            ChatResponse response = restTemplate.postForObject(apiUrl, request, ChatResponse.class);
+            if (response != null) {
+                text = response.getChoices().get(0).getMessage().getContent();
+            }
+        }
+
         return text;
     }
 

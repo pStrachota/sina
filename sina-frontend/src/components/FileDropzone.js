@@ -27,12 +27,12 @@ const FileDropzone = ({ onFileChange, loading }) => {
                     <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
                         <span className="font-semibold">Click to upload</span> or drag and drop
                     </p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">PDF (MAX 2 MB)</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">PDF, TXT, DOCX (MAX 2 MB)</p>
                 </div>
                 <input
                     id="dropzone-file"
                     type="file"
-                    accept=".pdf"
+                    accept=".pdf, .txt, .docx"
                     className="hidden"
                     onChange={onFileChange}
                     disabled={loading}

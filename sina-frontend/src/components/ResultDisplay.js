@@ -1,7 +1,24 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+
 const ResultDisplay = ({ loading, response, handleCopyToClipboard }) => {
+
+
+
+    const handleSaveResult = () => {
+        if (response) {
+            const blob = new Blob([response.content], { type: "text/plain" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "wynik.txt";
+            document.body.appendChild(a);
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+    };
+
     let content = null;
 
     if (loading) {
@@ -16,12 +33,20 @@ const ResultDisplay = ({ loading, response, handleCopyToClipboard }) => {
             <div className="mt-4">
                 <h2 className="text-2xl font-semibold mb-2">Wynik:</h2>
                 <p className="text-gray-700 text-xl">{response.content}</p>
-                <button
-                    onClick={handleCopyToClipboard}
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md mt-2"
-                >
-                    Kopiuj do schowka
-                </button>
+                <div className="flex flex-row justify-around my-4" >
+                    <button
+                        onClick={handleCopyToClipboard}
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md"
+                    >
+                        Kopiuj do schowka
+                    </button>
+                    <button
+                        onClick={handleSaveResult}
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md"
+                    >
+                        Zapisz do pliku
+                    </button>
+                </div>
             </div>
         );
     }

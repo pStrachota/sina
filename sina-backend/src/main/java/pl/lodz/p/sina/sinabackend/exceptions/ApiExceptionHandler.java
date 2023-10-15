@@ -77,9 +77,9 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(apiException, new HttpHeaders(), apiException.getHttpStatus());
     }
 
-    @ExceptionHandler(CannotReadTextFromPdfException.class)
-    public final ResponseEntity<Object> handleCannotReadTextFromPdfException(CannotReadTextFromPdfException ex,
-                                                                    WebRequest request) {
+    @ExceptionHandler(CannotReadTextException.class)
+    public final ResponseEntity<Object> handleCannotReadTextFromPdfException(CannotReadTextException ex,
+                                                                             WebRequest request) {
         ApiException apiException =
                 new ApiException(ex.getLocalizedMessage(), HttpStatus.BAD_REQUEST,
                         List.of(request.getDescription(false)), LocalDateTime.now());
