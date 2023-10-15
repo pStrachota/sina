@@ -41,14 +41,8 @@ public class ContentExtractorControl {
             """;
 
     public String extractContent(final MultipartFile multipartFile, final String language, final String contextLength, final String fileExtension) {
-        String text;
 
-        switch (fileExtension) {
-            case "txt" -> text = extractorFactory.executeExtractor(ExtractorType.TXT, multipartFile);
-            case "pdf" -> text = extractorFactory.executeExtractor(ExtractorType.PDF, multipartFile);
-            case "docx" -> text = extractorFactory.executeExtractor(ExtractorType.DOCX, multipartFile);
-            default -> throw new GeneralException("Unknown file extension");
-        }
+        String text = extractorFactory.executeExtractor(fileExtension, multipartFile);
 
         if (text == null || text.isEmpty()) {
             throw new CannotReadTextException("Cannot read text from PDF file");

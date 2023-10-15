@@ -22,8 +22,8 @@ public class ContentExtractorBoundary {
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(OK)
-    public ResponseEntity<ContentResponseDto> classify(@NotNull @RequestParam("file") final MultipartFile pdfFile,
-                                                       @NotNull @RequestParam("language") final String language,
+    public ResponseEntity<ContentResponseDto> classify(@RequestParam("file") final MultipartFile pdfFile,
+                                                       @RequestParam("language") final String language,
                                                        @RequestParam("contextLength") final String contextLength,
                                                        @RequestParam("fileExtension") final String fileExtension) {
         return ResponseEntity.ok().body(ContentResponseDto.builder().content(this.contentExtractorControl.extractContent(pdfFile, language, contextLength, fileExtension)).build());
