@@ -1,10 +1,27 @@
 import React from "react";
 import PropTypes from "prop-types";
+import {toast} from "react-toastify";
 
 
-const ResultDisplay = ({ loading, response, handleCopyToClipboard }) => {
+const ResultDisplay = ({ loading, response }) => {
 
-
+    const handleCopyToClipboard = () => {
+        if (response) {
+            navigator.clipboard
+                .writeText(response.content)
+                .then(() => {
+                    toast("Skopiowano do schowka", {
+                        type: "success",
+                    });
+                })
+                .catch((error) => {
+                    console.error("Error copying to clipboard", error);
+                    toast("Wystąpił błąd podczas kopiowania do schowka", {
+                        type: "error",
+                    });
+                });
+        }
+    };
 
     const handleSaveResult = () => {
         if (response) {

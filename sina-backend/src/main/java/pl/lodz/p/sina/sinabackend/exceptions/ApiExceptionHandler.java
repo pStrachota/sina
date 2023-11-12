@@ -1,6 +1,7 @@
 package pl.lodz.p.sina.sinabackend.exceptions;
 
 import org.apache.pdfbox.pdmodel.encryption.InvalidPasswordException;
+import org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -79,6 +80,16 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(CannotReadTextException.class)
     public final ResponseEntity<Object> handleCannotReadTextFromPdfException(CannotReadTextException ex,
+                                                                             WebRequest request) {
+        ApiException apiException =
+                new ApiException(ex.getLocalizedMessage(), HttpStatus.BAD_REQUEST,
+                        List.of(request.getDescription(false)), LocalDateTime.now());
+
+        return new ResponseEntity<>(apiException, new HttpHeaders(), apiException.getHttpStatus());
+    }
+
+    @ExceptionHandler(FileSizeLimitExceededException.class)
+    public final ResponseEntity<Object> handleFileSizeLimitExceededException(FileSizeLimitExceededException ex,
                                                                              WebRequest request) {
         ApiException apiException =
                 new ApiException(ex.getLocalizedMessage(), HttpStatus.BAD_REQUEST,

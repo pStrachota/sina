@@ -15,23 +15,6 @@ const FileUpload = ({
                         sliderValue,
                         onSliderChange,
                     }) => {
-    const handleCopyToClipboard = () => {
-        if (response) {
-            navigator.clipboard
-                .writeText(response.content)
-                .then(() => {
-                    toast("Skopiowano do schowka", {
-                        type: "success",
-                    });
-                })
-                .catch((error) => {
-                    console.error("Error copying to clipboard", error);
-                    toast("Wystąpił błąd podczas kopiowania do schowka", {
-                        type: "error",
-                    });
-                });
-        }
-    };
 
     return (
         <div className="w-1/2 p-6 bg-white rounded-lg shadow-md mr-5">
@@ -47,7 +30,6 @@ const FileUpload = ({
             <ResultDisplay
                 loading={loading}
                 response={response}
-                handleCopyToClipboard={handleCopyToClipboard}
             />
             <ToastContainer
                 position="top-center"
