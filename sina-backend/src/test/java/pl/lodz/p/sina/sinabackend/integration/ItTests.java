@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.io.FileNotFoundException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
 import static org.springframework.util.ResourceUtils.getFile;
@@ -39,7 +41,7 @@ class ItTests {
     @Test
     @Order(1)
     void shouldReturnResponseWhenParametersAreCorrectPdf() throws FileNotFoundException {
-        String filePath = "C:\\STUDIA\\VII_SEMESTR\\SINA\\przyklady\\PDF\\ZASOBY.pdf";
+        String filePath = Paths.get("src", "test", "resources", "ZASOBY.pdf").toString();
         String language = "English";
         String fileExtension = "pdf";
 
@@ -58,7 +60,7 @@ class ItTests {
     @Test
     @Order(2)
     void shouldThrowExceptionWhenFileExtensionNotMatch() throws FileNotFoundException {
-        String filePath = "C:\\STUDIA\\VII_SEMESTR\\SINA\\przyklady\\PDF\\ZASOBY.pdf";
+        String filePath = Paths.get("src", "test", "resources", "ZASOBY.PDF").toString();
         String language = "English";
         String fileExtension = "txt";
 
@@ -78,7 +80,7 @@ class ItTests {
     @Test
     @Order(3)
     void shouldThrowExceptionWhenFileContentIsEmpty() throws FileNotFoundException {
-        String filePath = "C:\\STUDIA\\VII_SEMESTR\\SINA\\przyklady\\TXT\\blank.txt";
+        String filePath = Paths.get("src", "test", "resources", "blank.txt").toString();
         String language = "English";
         String fileExtension = "txt";
 
@@ -99,7 +101,7 @@ class ItTests {
     @Test
     @Order(4)
     void shouldThrowExceptionWhenFileSizeIsTooBig() throws FileNotFoundException, InterruptedException {
-        String filePath = "C:\\STUDIA\\VII_SEMESTR\\SINA\\przyklady\\PDF\\ZA-DUZE\\toobig.pdf";
+        String filePath = Paths.get("src", "test", "resources", "toobig.pdf").toString();
         String language = "English";
         String fileExtension = "pdf";
 
@@ -120,7 +122,7 @@ class ItTests {
     @Test
     @Order(5)
     void shouldReturnResponseWhenParametersAreCorrectDocx() throws FileNotFoundException {
-        String filePath = "C:\\STUDIA\\VII_SEMESTR\\SINA\\przyklady\\DOCX\\report.docx";
+        String filePath = Paths.get("src", "test", "resources", "report.docx").toString();
         String language = "English";
         String fileExtension = "docx";
 
@@ -139,7 +141,7 @@ class ItTests {
     @Test
     @Order(6)
     void shouldThrowExceptionWhenContextLengthIsInvalid() throws FileNotFoundException {
-        String filePath = "C:\\STUDIA\\VII_SEMESTR\\SINA\\przyklady\\DOCX\\report.docx";
+        String filePath = Paths.get("src", "test", "resources", "report.docx").toString();
         String language = "English";
         String fileExtension = "docx";
 
@@ -160,7 +162,7 @@ class ItTests {
     @Test
     @Order(7)
     void shouldThrowExceptionWhenFileContentIsTooLong() throws FileNotFoundException {
-        String filePath = "C:\\STUDIA\\VII_SEMESTR\\SINA\\przyklady\\PDF\\ZA-DLUGIE\\07.pdf";
+        String filePath = Paths.get("src", "test", "resources", "07.pdf").toString();
         String language = "English";
         String fileExtension = "pdf";
 
@@ -180,7 +182,7 @@ class ItTests {
     @Test
     @Order(8)
     void shouldReturnResponseWhenParametersAreCorrectTxt() throws FileNotFoundException {
-        String filePath = "C:\\STUDIA\\VII_SEMESTR\\SINA\\przyklady\\TXT\\PBSI.txt";
+        String filePath = Paths.get("src", "test", "resources", "PBSI.txt").toString();
         String language = "English";
         String fileExtension = "txt";
 
@@ -199,7 +201,7 @@ class ItTests {
     @Test
     @Order(9)
     void shouldThrowExceptionWhenLanguageIsNotSupported() throws FileNotFoundException {
-        String filePath = "C:\\STUDIA\\VII_SEMESTR\\SINA\\przyklady\\TXT\\PBSI.txt";
+        String filePath = Paths.get("src", "test", "resources", "PBSI.txt").toString();
         String language = "Hawaiian";
         String fileExtension = "txt";
 
@@ -221,7 +223,7 @@ class ItTests {
     @Test
     @Order(10)
     void shouldReturnResponseWhenParametersAreCorrectPptx() throws FileNotFoundException {
-        String filePath = "C:\\STUDIA\\VII_SEMESTR\\SINA\\przyklady\\PPTX\\WebTracker.pptx";
+        String filePath = Paths.get("src", "test", "resources", "WebTracker.pptx").toString();
         String language = "English";
         String fileExtension = "pptx";
 
