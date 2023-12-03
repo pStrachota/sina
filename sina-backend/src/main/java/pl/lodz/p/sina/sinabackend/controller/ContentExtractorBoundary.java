@@ -1,7 +1,6 @@
 package pl.lodz.p.sina.sinabackend.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.antlr.v4.runtime.misc.NotNull;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -24,9 +23,9 @@ public class ContentExtractorBoundary {
     @ResponseStatus(OK)
     public ResponseEntity<ContentResponseDto> classify(@RequestParam("file") final MultipartFile pdfFile,
                                                        @RequestParam("language") final String language,
-                                                       @RequestParam("contextLength") final String contextLength,
+                                                       @RequestParam("contextLength") final String contextLength ,
                                                        @RequestParam("fileExtension") final String fileExtension) {
-        return ResponseEntity.ok().body(ContentResponseDto.builder().content(this.contentExtractorControl.extractContent(pdfFile, language, contextLength, fileExtension)).build());
+        return ResponseEntity.ok().body(ContentResponseDto.builder().content(this.contentExtractorControl.extractContent(pdfFile, language, contextLength , fileExtension)).build());
     }
 
 

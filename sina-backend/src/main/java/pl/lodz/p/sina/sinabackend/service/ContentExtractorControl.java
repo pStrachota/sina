@@ -1,7 +1,7 @@
 package pl.lodz.p.sina.sinabackend.service;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,8 +10,9 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import pl.lodz.p.sina.sinabackend.dto.ChatRequest;
 import pl.lodz.p.sina.sinabackend.dto.ChatResponse;
-import pl.lodz.p.sina.sinabackend.exceptions.CannotReadTextException;
-import pl.lodz.p.sina.sinabackend.exceptions.GeneralException;
+import pl.lodz.p.sina.sinabackend.exceptions.*;
+
+import java.util.List;
 
 
 @Service
@@ -32,7 +33,6 @@ public class ContentExtractorControl {
     private String apiUrl;
 
     private static final String PROMPT_TEMPLATE = """
-            I'm developing an application for summarizing various type of files.
             Write me a summary of what is in this file.
             Limit your response to %s00 characters.
             Write in language: %s
@@ -42,10 +42,26 @@ public class ContentExtractorControl {
 
     public String extractContent(final MultipartFile multipartFile, final String language, final String contextLength, final String fileExtension) {
 
+        if (multipartFile.getSize() > 2_000_000) {
+            throw new FileTooBigException("File is too big");
+        }
+
+        if (Integer.parseInt(contextLength) < 1 || Integer.parseInt(contextLength) > 10) {
+            throw new InvalidContextLengthException("Context length is invalid");
+        }
+
+        checkSupportedLanguages(language);
+
+        String extension = FilenameUtils.getExtension(multipartFile.getOriginalFilename());
+
+        checkFileExtension(fileExtension, extension);
+
         String text = extractorFactory.executeExtractor(fileExtension, multipartFile);
 
-        if (text == null || text.isEmpty()) {
-            throw new CannotReadTextException("Cannot read text from PDF file");
+        checkNumberOfTokens(text);
+
+        if (text.isEmpty()) {
+            throw new EmptyFileContentException("File content is empty");
         } else {
             String prompt = String.format(PROMPT_TEMPLATE, contextLength, language, text);
             ChatRequest request = new ChatRequest(model, prompt);
@@ -57,6 +73,31 @@ public class ContentExtractorControl {
         }
 
         return text;
+    }
+
+    private static void checkSupportedLanguages(String language) {
+        List<String> supportedLanguages = List.of("English", "German", "Korean", "Polish");
+        if (!supportedLanguages.contains(language)) {
+            throw new UnsupportedLanguageException("Language is not supported");
+        }
+    }
+
+    private static void checkNumberOfTokens(String text) {
+        String[] tokens = text.split("\\s+");
+
+        int numberOfTokens = tokens.length;
+
+        if (numberOfTokens > 3000) {
+            throw new FileContentTooLongException("File content is too long");
+        }
+    }
+
+    private static void checkFileExtension(String fileExtension, String extension) {
+        if ((extension == null) || extension.isEmpty()) {
+            throw new IllegalFileExtensionException("File extension is empty");
+        } else if (!extension.equals(fileExtension)) {
+            throw new IllegalFileExtensionException("File extension is not supported");
+        }
     }
 
 }

@@ -78,8 +78,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(apiException, new HttpHeaders(), apiException.getHttpStatus());
     }
 
-    @ExceptionHandler(CannotReadTextException.class)
-    public final ResponseEntity<Object> handleCannotReadTextFromPdfException(CannotReadTextException ex,
+    @ExceptionHandler(EmptyFileContentException.class)
+    public final ResponseEntity<Object> handleCannotReadTextFromPdfException(EmptyFileContentException ex,
                                                                              WebRequest request) {
         ApiException apiException =
                 new ApiException(ex.getLocalizedMessage(), HttpStatus.BAD_REQUEST,
@@ -97,6 +97,61 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         return new ResponseEntity<>(apiException, new HttpHeaders(), apiException.getHttpStatus());
     }
+
+    @ExceptionHandler(FileTooBigException.class)
+    public final ResponseEntity<Object> handleFileTooBigException(FileTooBigException ex,
+                                                                             WebRequest request) {
+        ApiException apiException =
+                new ApiException(ex.getLocalizedMessage(), HttpStatus.BAD_REQUEST,
+                        List.of(request.getDescription(false)), LocalDateTime.now());
+
+        return new ResponseEntity<>(apiException, new HttpHeaders(), apiException.getHttpStatus());
+    }
+
+    @ExceptionHandler(FileContentTooLongException.class)
+    public final ResponseEntity<Object> handleFileContentTooLongException(FileContentTooLongException ex,
+                                                                  WebRequest request) {
+        ApiException apiException =
+                new ApiException(ex.getLocalizedMessage(), HttpStatus.BAD_REQUEST,
+                        List.of(request.getDescription(false)), LocalDateTime.now());
+
+        return new ResponseEntity<>(apiException, new HttpHeaders(), apiException.getHttpStatus());
+    }
+
+    @ExceptionHandler(IllegalFileExtensionException.class)
+    public final ResponseEntity<Object> handleIllegalFileExtensionException(IllegalFileExtensionException ex,
+                                                                          WebRequest request) {
+        ApiException apiException =
+                new ApiException(ex.getLocalizedMessage(), HttpStatus.BAD_REQUEST,
+                        List.of(request.getDescription(false)), LocalDateTime.now());
+
+        return new ResponseEntity<>(apiException, new HttpHeaders(), apiException.getHttpStatus());
+    }
+
+
+    @ExceptionHandler(InvalidContextLengthException.class)
+    public final ResponseEntity<Object> handleInvalidContextLengthException(InvalidContextLengthException ex,
+                                                                          WebRequest request) {
+        ApiException apiException =
+                new ApiException(ex.getLocalizedMessage(), HttpStatus.BAD_REQUEST,
+                        List.of(request.getDescription(false)), LocalDateTime.now());
+
+        return new ResponseEntity<>(apiException, new HttpHeaders(), apiException.getHttpStatus());
+    }
+
+
+    @ExceptionHandler(UnsupportedLanguageException.class)
+    public final ResponseEntity<Object> handleUnsupportedLanguageException(UnsupportedLanguageException ex,
+                                                                          WebRequest request) {
+        ApiException apiException =
+                new ApiException(ex.getLocalizedMessage(), HttpStatus.BAD_REQUEST,
+                        List.of(request.getDescription(false)), LocalDateTime.now());
+
+        return new ResponseEntity<>(apiException, new HttpHeaders(), apiException.getHttpStatus());
+    }
+
+
+
 
     @ExceptionHandler(GeneralException.class)
     public final ResponseEntity<Object> handleGeneralException(GeneralException ex,

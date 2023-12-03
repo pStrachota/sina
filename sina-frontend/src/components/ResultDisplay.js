@@ -10,13 +10,13 @@ const ResultDisplay = ({ loading, response }) => {
             navigator.clipboard
                 .writeText(response.content)
                 .then(() => {
-                    toast("Skopiowano do schowka", {
+                    toast("Copied to clipboard", {
                         type: "success",
                     });
                 })
                 .catch((error) => {
                     console.error("Error copying to clipboard", error);
-                    toast("Wystąpił błąd podczas kopiowania do schowka", {
+                    toast("An error occurred while copying to the clipboard", {
                         type: "error",
                     });
                 });
@@ -29,7 +29,7 @@ const ResultDisplay = ({ loading, response }) => {
             const url = URL.createObjectURL(blob);
             const a = document.createElement("a");
             a.href = url;
-            a.download = "wynik.txt";
+            a.download = "summary.txt";
             document.body.appendChild(a);
             a.click();
             URL.revokeObjectURL(url);
@@ -42,7 +42,7 @@ const ResultDisplay = ({ loading, response }) => {
         content = (
             <div className="mt-4 flex items-center">
                 <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500 mx-auto"></div>
-                <span className="ml-2 text-gray-700">Trwa przetwarzanie pliku...</span>
+                <span className="ml-2 text-gray-700">File processing...</span>
             </div>
         );
     } else if (response) {
@@ -55,13 +55,13 @@ const ResultDisplay = ({ loading, response }) => {
                         onClick={handleCopyToClipboard}
                         className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md"
                     >
-                        Kopiuj do schowka
+                        Copy to clipboard
                     </button>
                     <button
                         onClick={handleSaveResult}
                         className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md"
                     >
-                        Zapisz do pliku
+                        Save to file
                     </button>
                 </div>
             </div>

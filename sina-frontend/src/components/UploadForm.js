@@ -12,22 +12,22 @@ const UploadForm = ({
     return (
         <div className="flex flex-row justify-around mt-3">
             <div className="flex flex-col">
-                <h6>Wybierz język streszczenia:</h6>
+                <h6>Select the language of the summary:</h6>
                 <select
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     value={selectedLanguage}
                     onChange={onLanguageChange}
                     disabled={loading}
                 >
-                    <option value="polish">Polski</option>
-                    <option value="english">Angielski</option>
-                    <option value="korean">Koreański</option>
-                    <option value="german">Niemiecki</option>
+                    <option value="polish">Polish</option>
+                    <option value="english">English</option>
+                    <option value="korean">Korean</option>
+                    <option value="german">German</option>
                 </select>
             </div>
             <div>
                 <label htmlFor="slider" className="text-gray-700 block">
-                    Wybierz szczegółowość:
+                    Select detail level:
                 </label>
                 <input
                     type="range"
@@ -39,7 +39,7 @@ const UploadForm = ({
                     onChange={onSliderChange}
                     disabled={loading}
                 />
-                <p className="text-gray-700">Wartość: {sliderValue}</p>
+                <p className="text-gray-700">Value: {sliderValue}</p>
             </div>
             <button
                 onClick={handleUpload}
@@ -48,7 +48,7 @@ const UploadForm = ({
                 }`}
                 disabled={loading}
             >
-                Prześlij PDF
+                Send file
             </button>
         </div>
     );

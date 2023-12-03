@@ -22,7 +22,7 @@ function App() {
                setFile(selectedFile);
             } else {
                 setFile(null);
-                toast("Plik musi być mniejszy niż 2MB i mieć rozszerzenie .pdf, .txt, .docx", {
+                toast("The file must be smaller than 2MB and have the extension .pdf, .txt, .docx, .pptx", {
                     type: "error",
 
                 })
@@ -52,18 +52,29 @@ function App() {
                 setResponse(response.data);
                 setLoading(false);
             } catch (error) {
-                if (error.response.data.exceptionMessage.includes("context_length_exceeded")) {
-                    toast("Zbyt długi tekst. Spróbuj ponownie z innym plikiem.", {
+                if (error.response.data && error.response.data.exceptionMessage) {
+                    if (error.response.data.exceptionMessage.includes("File content is too long") || error.response.data.exceptionMessage.includes("context_length_exceeded")) {
+                        toast("Text too long. Please try again with a different file.", {
+                            type: "error",
+                        });
+                    } else if (error.response.data.exceptionMessage.includes("no_text_found")) {
+                        toast("No text found in the PDF file. Please try again with a different file.", {
+                            type: "error",
+                        });
+                    } else if (error.response.data.exceptionMessage.includes("Cannot read text from PDF file")) {
+                        toast("Cannot read text from PDF file. Please try again with a different file.", {
+                            type: "error",
+                        });
+                    } else if (error.response.data.exceptionMessage.includes("File content is empty")) {
+                        toast("The file contains no content. Please try again with a different file.", {
+                            type: "error",
+                        });
+                    }
+                } else {
+                    toast("Unknown error. Please try again later.", {
                         type: "error",
-                    })
-                } else if (error.response.data.exceptionMessage.includes("no_text_found")) {
-                    toast("Nie znaleziono tekstu w pliku PDF. Spróbuj ponownie z innym plikiem.", {
-                        type: "error",
-                    })
-                } else if (error.response.data.exceptionMessage.includes("Cannot read text from PDF file")) {
-                    toast("Nie można odczytać tekstu z pliku PDF. Spróbuj ponownie z innym plikiem.", {
-                        type: "error",
-                    })
+                    });
+                    console.error(error);
                 }
                 setResponse("")
                 setLoading(false);
