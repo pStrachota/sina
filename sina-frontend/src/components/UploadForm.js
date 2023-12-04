@@ -19,10 +19,10 @@ const UploadForm = ({
                     onChange={onLanguageChange}
                     disabled={loading}
                 >
-                    <option value="polish">Polish</option>
-                    <option value="english">English</option>
-                    <option value="korean">Korean</option>
-                    <option value="german">German</option>
+                    <option value="Polish">Polish</option>
+                    <option value="English">English</option>
+                    <option value="Korean">Korean</option>
+                    <option value="German">German</option>
                 </select>
             </div>
             <div>
