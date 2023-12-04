@@ -12,7 +12,7 @@ function App() {
     const [response, setResponse] = useState("");
     const [loading, setLoading] = useState(false);
     const [sliderValue, setSliderValue] = useState(5);
-    const [selectedLanguage, setSelectedLanguage] = useState("polish");
+    const [selectedLanguage, setSelectedLanguage] = useState("Polish");
 
     const onFileChange = useCallback((event) => {
         setResponse("")
